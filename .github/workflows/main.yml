@@ -85,4 +85,4 @@ jobs:
         - name: OWASP ZAP Baseline
           uses: zaproxy/action-baseline@v0.6.1
           with:
-              target: https://nodejs.csdesign.hu/ 
+              target: http://csdesign.hu:3000/test 
