@@ -15,6 +15,9 @@ WORKDIR /src
 # This will copy everything from the source path 
 # --more of a convenience when testing locally.
 COPY . .
+WORKDIR /src/src
+COPY ./src/ .
+WORKDIR /src
 # update each dependency in package.json to the latest version
 RUN npm install -g npm-check-updates \
     ncu -u \
@@ -26,6 +29,7 @@ RUN npm ci --only=production
 COPY . /src
 # DEBUG: List files
 RUN ls -la /src/*
+RUN ls -la /src/src/*
 
 EXPOSE 3000
 CMD [ "node", "index.js" ]
