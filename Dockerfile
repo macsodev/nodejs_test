@@ -24,5 +24,8 @@ RUN npm install -g npm-check-updates \
 RUN npm ci --only=production
 # Bundle app source
 COPY . /src
+# DEBUG: List files
+RUN ls -la /src/*
+
 EXPOSE 3000
 CMD [ "node", "index.js" ]
