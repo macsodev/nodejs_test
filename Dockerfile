@@ -29,7 +29,6 @@ RUN npm ci --only=production
 COPY . /src
 # DEBUG: List files
 RUN ls -la /src/*
-RUN ls -la /src/src/*
 
 EXPOSE 3000
-CMD [ "node", "index.js" ]
+CMD [ "node", "./src/index.js" ]
