@@ -82,9 +82,10 @@ jobs:
             body: Build job of ${{github.repository}} FAILED! 
         - name: Push to GitHub Container registry
           run: |
+            docker images list
             export CR_PAT=${{secrets.REG_TOKEN}}
             echo $CR_PAT | docker login ghcr.io -u macsodev --password-stdin
-            docker push ghcr.io/macsodev/nodejs-demo:latest
+            docker push macsodev/nodejs-demo:latest
           
           
         
