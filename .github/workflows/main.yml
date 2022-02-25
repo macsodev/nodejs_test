@@ -80,6 +80,13 @@ jobs:
             to: csordasm@starschema.net
             from: Martin@GitHub Actions
             body: Build job of ${{github.repository}} FAILED! 
+        - name: Push to GitHub Container registry
+          run: |
+            export CR_PAT=${{secrets.REG_TOKEN}}
+            echo $CR_PAT | docker login ghcr.io -u macsodev --password-stdin
+            docker push ghcr.io/macsodev/nodejs-demo:latest
+          
+          
         
         - name: Run the image in a container
           uses: addnab/docker-run-action@v3
