@@ -108,7 +108,7 @@ jobs:
       - name: Send email on success
         uses: dawidd6/action-send-mail@v3.6.0
         with:
-          server_address: smtp-relay.sendinblue.com
+          server_address: mail.csdesign.hu
           server_port: 587
           # Optional (recommended): mail server username:
           username: ${{secrets.MAIL_USERNAME}}
