@@ -66,15 +66,7 @@ jobs:
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-demo:latest
           
-        - name: Run the image in a container
-          uses: addnab/docker-run-action@v3
-          with:
-            image: ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-demo:latest
-            run: |
-              echo "runing the docker image"
-              echo "Testing the nodejs  app endpoints"
-              echo ${{ steps.docker_build.outputs.digest }}
-        - name: Send email on success
+        - name: Send email on failed docker image build
           if: ${{ failure() }}
           uses: dawidd6/action-send-mail@v3.6.0
           with:
@@ -88,6 +80,16 @@ jobs:
             to: csordasm@starschema.net
             from: Martin@GitHub Actions
             body: Build job of ${{github.repository}} FAILED! 
+        
+        - name: Run the image in a container
+          uses: addnab/docker-run-action@v3
+          with:
+            image: ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-demo:latest
+            run: |
+              echo "runing the docker image"
+              echo "Testing the nodejs  app endpoints"
+              echo ${{ steps.docker_build.outputs.digest }}
+  
               
               
               
