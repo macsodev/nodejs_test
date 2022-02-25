@@ -78,7 +78,7 @@ jobs:
           if: ${{ failure() }}
           uses: dawidd6/action-send-mail@v3.6.0
           with:
-            server_address: smtp-relay.sendinblue.com
+            server_address: mail.csdesign.hu
             server_port: 587
             # Optional (recommended): mail server username:
             username: ${{secrets.MAIL_USERNAME}}
@@ -114,7 +114,7 @@ jobs:
           username: ${{secrets.MAIL_USERNAME}}
           # Optional (recommended) mail server password:
           password: ${{secrets.MAIL_PASSWORD}}
-          subject: "Github Actions job was successful :heavy_check_mark:"
+          subject: "Github Actions job was successful"
           to: csordasm@starschema.net
           from: Martin@GitHub Actions
           body: Build job of ${{github.repository}} completed successfully! 
