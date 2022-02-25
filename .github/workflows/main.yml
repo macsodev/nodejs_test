@@ -94,7 +94,7 @@ jobs:
               
               
               
-  owasp_test:
+  owasp_test_and_send_mail:
     runs-on: ubuntu-latest
     needs: [push_to_Docker_Hub]
     steps:
@@ -102,24 +102,18 @@ jobs:
           uses: zaproxy/action-full-scan@v0.3.0
           with:
               target: http://csdesign.hu:3000/test/
-              
-  send_mail:
-    runs-on: ubuntu-latest
-    needs: [owasp_test]
-    steps:
-      - name: Send email on success
-        uses: dawidd6/action-send-mail@v3.6.0
-        with:
-          server_address: mail.csdesign.hu
-          server_port: 587
-          # Optional (recommended): mail server username:
-          username: ${{secrets.MAIL_USERNAME}}
-          # Optional (recommended) mail server password:
-          password: ${{secrets.MAIL_PASSWORD}}
-          subject: "Github Actions job was successful"
-          to: csordasm@starschema.net
-          from: Martin@GitHub Actions
-          body: Build job of ${{github.repository}} completed successfully! 
-          # attachments: zap_scan.zip
-          
+        - name: Send email on success
+          uses: dawidd6/action-send-mail@v3.6.0
+          with:
+            server_address: mail.csdesign.hu
+            server_port: 587
+            # Optional (recommended): mail server username:
+            username: ${{secrets.MAIL_USERNAME}}
+            # Optional (recommended) mail server password:
+            password: ${{secrets.MAIL_PASSWORD}}
+            subject: "Github Actions job was successful"
+            to: csordasm@starschema.net
+            from: Martin@GitHub Actions
+            body: Build job of ${{github.repository}} completed successfully! 
+            attachments: zap_scan.zip,report_html.html
       
