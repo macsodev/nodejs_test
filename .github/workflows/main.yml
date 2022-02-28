@@ -75,29 +75,29 @@ jobs:
               ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-demo:latest
               ghcr.io/${{ github.repository_owner }}/nodejs-demo:latest
           
-        - name: Send email on failed docker image build
-          if: ${{ failure() }}
-          uses: dawidd6/action-send-mail@v3.6.0
-          with:
-            server_address: mail.csdesign.hu
-            server_port: 587
-            # Optional (recommended): mail server username:
-            username: ${{secrets.MAIL_USERNAME}}
-            # Optional (recommended) mail server password:
-            password: ${{secrets.MAIL_PASSWORD}}
-            subject: Github Actions job FAILED!!!
-            to: csordasm@starschema.net
-            from: Martin@GitHub Actions
-            body: Build job of ${{github.repository}} FAILED!
+#        - name: Send email on failed docker image build
+#          if: ${{ failure() }}
+#          uses: dawidd6/action-send-mail@v3.6.0
+#          with:
+#            server_address: mail.csdesign.hu
+#            server_port: 587
+#            # Optional (recommended): mail server username:
+#            username: ${{secrets.MAIL_USERNAME}}
+#            # Optional (recommended) mail server password:
+#            password: ${{secrets.MAIL_PASSWORD}}
+#            subject: Github Actions job FAILED!!!
+#            to: csordasm@starschema.net
+#            from: Martin@GitHub Actions
+#            body: Build job of ${{github.repository}} FAILED!
         - name: Send custom JSON data to Slack workflow
-          if: ${{ success() }}
+          if: always()
           id: slack
           uses: slackapi/slack-github-action@v1.18.0
           with:
           # This data can be any valid JSON from a previous step in the GitHub Action
             payload: |
               {
-                "text": "Build job of ${{github.repository}} FAILED!"
+                "text": "${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}"
               }
           env:
             SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -138,17 +138,5 @@ jobs:
             from: Martin@GitHub Actions
             body: Build job of ${{github.repository}} completed successfully! 
             attachments: zap_scan.zip,report_html.html
-        - name: Send custom JSON data to Slack workflow
-          if: ${{ success() }}
-          id: slack
-          uses: slackapi/slack-github-action@v1.18.0
-          with:
-          # This data can be any valid JSON from a previous step in the GitHub Action
-            payload: |
-              {
-                "text": "Build job of ${{github.repository}} was SUCCESSFUL!"
-              }
-          env:
-            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         
       
