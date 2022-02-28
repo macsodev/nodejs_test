@@ -88,7 +88,19 @@ jobs:
             subject: Github Actions job FAILED!!!
             to: csordasm@starschema.net
             from: Martin@GitHub Actions
-            body: Build job of ${{github.repository}} FAILED! 
+            body: Build job of ${{github.repository}} FAILED!
+        - name: Send custom JSON data to Slack workflow
+          if: ${{ success() }}
+          id: slack
+          uses: slackapi/slack-github-action@v1.18.0
+          with:
+          # This data can be any valid JSON from a previous step in the GitHub Action
+            payload: |
+              {
+                "text": "Build job of ${{github.repository}} FAILED!"
+              }
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           
         
         - name: Run the image in a container
@@ -126,4 +138,17 @@ jobs:
             from: Martin@GitHub Actions
             body: Build job of ${{github.repository}} completed successfully! 
             attachments: zap_scan.zip,report_html.html
+        - name: Send custom JSON data to Slack workflow
+          if: ${{ success() }}
+          id: slack
+          uses: slackapi/slack-github-action@v1.18.0
+          with:
+          # This data can be any valid JSON from a previous step in the GitHub Action
+            payload: |
+              {
+                "text": "Build job of ${{github.repository}} was SUCCESSFUL!"
+              }
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        
       
