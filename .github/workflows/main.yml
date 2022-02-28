@@ -57,14 +57,23 @@ jobs:
           with:
             username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
-      
+        
+        - name: Login to GitHub Container Registry
+          uses: docker/login-action@v1
+          with:
+            registry: ghcr.io
+            username: ${{ github.repository_owner }}
+            password: ${{ secrets.REG_TOKEN }}
+            
         - name: Build and push
           uses: docker/build-push-action@v2
           with:
             context: ./
             file: ./Dockerfile
             push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-demo:latest
+            tags: |
+              ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-demo:latest
+              ghcr.io/${{ github.repository_owner }}/nodejs-demo:latest
           
         - name: Send email on failed docker image build
           if: ${{ failure() }}
@@ -80,13 +89,6 @@ jobs:
             to: csordasm@starschema.net
             from: Martin@GitHub Actions
             body: Build job of ${{github.repository}} FAILED! 
-        - name: Push to GitHub Container registry
-          run: |
-            docker images list
-            export CR_PAT=${{secrets.REG_TOKEN}}
-            echo $CR_PAT | docker login ghcr.io -u macsodev --password-stdin
-            docker push macsodev/nodejs-demo:latest
-          
           
         
         - name: Run the image in a container
