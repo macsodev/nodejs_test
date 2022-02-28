@@ -1,7 +1,7 @@
 # Tegyuk invalidda a fajlt, hogy lassuk az email kuldest
 
-FROM node
-LABEL authors="Yann Mulonda"
+#FROM node
+#LABEL authors="Yann Mulonda"
 
 
 
