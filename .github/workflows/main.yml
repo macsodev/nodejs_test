@@ -97,7 +97,7 @@ jobs:
           # This data can be any valid JSON from a previous step in the GitHub Action
             payload: |
               {
-                "text": "${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}"
+                "text": "${{ github.job }} job of ${{ github.repository }} has *${{ job.status }}*. Details: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}"
               }
           env:
             SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
