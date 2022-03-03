@@ -101,9 +101,9 @@ jobs:
               echo ${{ steps.docker_build.outputs.digest }}
   
               
-  slack_notify_failure:
+  slack_notify:
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [push_to_Docker_Hub]
     # Steps represent a sequence of tasks that will be executed as part of the job
     if: always()
     steps:
@@ -117,7 +117,7 @@ jobs:
         # This data can be any valid JSON from a previous step in the GitHub Action
           payload: |
             {
-              "text": ":x::x::x: ${{ needs.build }} job of ${{ github.repository }} has *_FAILED_*.\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
+              "text": ":x::x::x: ${{ needs.push_to_Docker_Hub.name }} job of ${{ github.repository }} has *_FAILED!_*\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
             }
       - name: Send FAILED status msg to Slack workflow
         if: (needs.build.result == 'success')
@@ -129,7 +129,7 @@ jobs:
         # This data can be any valid JSON from a previous step in the GitHub Action
           payload: |
             {
-              "text": ":white_check_mark::white_check_mark::white_check_mark: ${{ needs.build }} job of ${{ github.repository }} was *_SUCCESSFUL!_*.\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
+              "text": ":white_check_mark::white_check_mark::white_check_mark: ${{ needs.push_to_Docker_Hub.name }} job of ${{ github.repository }} was *_SUCCESSFUL!_*\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
             }
             
           
