@@ -89,19 +89,6 @@ jobs:
 #            to: csordasm@starschema.net
 #            from: Martin@GitHub Actions
 #            body: Build job of ${{github.repository}} FAILED!
-        - name: Send custom JSON data to Slack workflow
-          id: slack
-          uses: slackapi/slack-github-action@v1.18.0
-          env:
-            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          if: failure()
-          with:
-          # This data can be any valid JSON from a previous step in the GitHub Action
-            payload: |
-              {
-                "text": ":gear: ${{ github.job }} job of ${{ github.repository }} has *_${{ job.status }}_*.\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
-              }
-          
           
         
         - name: Run the image in a container
@@ -130,7 +117,7 @@ jobs:
         # This data can be any valid JSON from a previous step in the GitHub Action
           payload: |
             {
-              "text": ":x::x::x: ${{ jobs.build.name }} job of ${{ github.repository }} has *_FAILED_*.\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
+              "text": ":x::x::x: ${{ needs.build }} job of ${{ github.repository }} has *_FAILED_*.\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
             }
       - name: Send FAILED status msg to Slack workflow
         if: (needs.build.result == 'success')
@@ -142,7 +129,7 @@ jobs:
         # This data can be any valid JSON from a previous step in the GitHub Action
           payload: |
             {
-              "text": ":white_check_mark::white_check_mark::white_check_mark: ${{ jobs.build.name }} job of ${{ github.repository }} was *_SUCCESSFUL!_*.\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
+              "text": ":white_check_mark::white_check_mark::white_check_mark: ${{ needs.build }} job of ${{ github.repository }} was *_SUCCESSFUL!_*.\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
             }
             
           
