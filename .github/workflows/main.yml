@@ -108,7 +108,7 @@ jobs:
     if: always()
     steps:
       - name: Send FAILED status msg to Slack workflow
-        if: (needs.build.result == 'failure')
+        if: (needs.push_to_Docker_Hub.result == 'failure')
         id: slack_failed
         uses: slackapi/slack-github-action@v1.18.0
         env:
@@ -119,8 +119,8 @@ jobs:
             {
               "text": ":x::x::x: ${{ needs.push_to_Docker_Hub.name }} job of ${{ github.repository }} has *_FAILED!_*\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
             }
-      - name: Send FAILED status msg to Slack workflow
-        if: (needs.build.result == 'success')
+      - name: Send SUCCESS status msg to Slack workflow
+        if: (needs.push_to_Docker_Hub.result == 'success')
         id: slack_success
         uses: slackapi/slack-github-action@v1.18.0
         env:
