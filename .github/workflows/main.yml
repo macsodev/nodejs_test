@@ -130,7 +130,7 @@ jobs:
         # This data can be any valid JSON from a previous step in the GitHub Action
           payload: |
             {
-              "text": ":x::x::x: ${{ jobs.build }} job of ${{ github.repository }} has *_FAILED_*.\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
+              "text": ":x::x::x: ${{ jobs.build.name }} job of ${{ github.repository }} has *_FAILED_*.\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
             }
       - name: Send FAILED status msg to Slack workflow
         if: (needs.build.result == 'success')
@@ -142,7 +142,7 @@ jobs:
         # This data can be any valid JSON from a previous step in the GitHub Action
           payload: |
             {
-              "text": ":white_check_mark::white_check_mark::white_check_mark: ${{ jobs.build }} job of ${{ github.repository }} was *_SUCCESSFUL!_*.\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
+              "text": ":white_check_mark::white_check_mark::white_check_mark: ${{ jobs.build.name }} job of ${{ github.repository }} was *_SUCCESSFUL!_*.\n\nDetails: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|*CLICK HERE*>"
             }
             
           
